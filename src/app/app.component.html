@@ -17,7 +17,7 @@
       <label for="toggle-all">Mark all as complete</label>
       <ul class="todo-list">
         <!-- 列表分类 -->
-        <li *ngFor="let todo of todos; let i = index"
+        <li *ngFor="let todo of filterTodos; let i = index"
             [ngClass]="{completed: todo.done, editing: currentEditing === todo}">
           <div class="view">
             <input class="toggle"
@@ -29,39 +29,40 @@
           </div>
           <input class="edit"
                  [value]="todo.title"
-                 (blur)="currentEditing = null"
-                 (keyup.enter)="saveEdit(todo,$event)">
+                 (blur)="saveEdit(todo,$event)"
+                 (keyup.enter)="saveEdit(todo,$event)"
+                 (keyup)="cancelEdit($event)">
         </li>
       </ul>
     </section>
     <!-- 底部 -->
     <footer class="footer">
-      <!-- This should be `0 items left` by default -->
-      <span class="todo-count"><strong>0</strong> item left</span>
-      <!-- Remove this if you don't implement routing -->
+      <!-- 未完成项目个数 -->
+      <span class="todo-count"><strong>{{ toggleUncompleted }}</strong> item left</span>
+      <!-- 状态切换 -->
       <ul class="filters">
         <li>
-          <a class="selected"
+          <a [ngClass]="{selected: visibility === 'all'}"
              href="#/">All</a>
         </li>
         <li>
-          <a href="#/active">Active</a>
+          <a [ngClass]="{selected: visibility === 'active'}"
+             href="#/active">Active</a>
         </li>
         <li>
-          <a href="#/completed">Completed</a>
+          <a [ngClass]="{selected: visibility === 'completed'}"
+             href="#/completed">Completed</a>
         </li>
       </ul>
-      <!-- Hidden if no completed items are left ↓ -->
-      <button class="clear-completed">Clear completed</button>
+      <!-- 清除完成项 -->
+      <button class="clear-completed"
+              (click)="clearCompleted()">Clear completed</button>
     </footer>
   </ng-template>
-
 </section>
+
 <footer class="info">
   <p>Double-click to edit a todo</p>
-  <!-- Remove the below line ↓ -->
   <p>Template by <a href="http://sindresorhus.com">Sindre Sorhus</a></p>
-  <!-- Change this out with your name and url ↓ -->
-  <p>Created by <a href="http://todomvc.com">you</a></p>
-  <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+  <p>Created by <a href="http://todomvc.com">zf</a></p>
 </footer>
